@@ -679,13 +679,21 @@ html.so #fog i{animation-play-state:paused!important}
   function uid(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,10)}}
   function post(data){
     var body=JSON.stringify(data);
+    function go(mode,ms){
+      var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort()},ms);
+      var o={method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:body,redirect:'follow',mode:mode,signal:ctl?ctl.signal:undefined};
+      return fetch(C.sheet,o).then(function(r){clearTimeout(tm);return r},function(e){clearTimeout(tm);throw e})}
     function attempt(n){
-      var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort()},20000);
-      return fetch(C.sheet,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:body,redirect:'follow',signal:ctl?ctl.signal:undefined})
-        .then(function(r){clearTimeout(tm);return r.json()})
-        .then(function(j){if(!j||j.ok!==true)throw new Error('server');return j})
-        .catch(function(e){clearTimeout(tm);if(n>=2)throw e;return new Promise(function(r){setTimeout(r,1500*(n+1))}).then(function(){return attempt(n+1)})})}
-    return attempt(0)}
+      return go('cors',20000)
+        .then(function(r){return r.json()})
+        .then(function(j){if(!j||j.ok!==true){var e=new Error('server');e.server=true;throw e}return j})
+        .catch(function(e){
+          if(e&&e.server)throw e;
+          /* the reply could not be read (CORS / redirect page): send once more without reading it; the id prevents duplicates */
+          return go('no-cors',20000)});
+    }
+    function loop(n){return attempt(n).catch(function(e){try{console.error('RSVP send failed',e)}catch(_){}if(n>=2)throw e;return new Promise(function(r){setTimeout(r,1500*(n+1))}).then(function(){return loop(n+1)})})}
+    return loop(0)}
   var rid=null;
   function setBusy(v){busy=v;['ry','rx'].forEach(function(k){var e=$(k);e.disabled=v;e.style.opacity=v?'.6':'';e.style.pointerEvents=v?'none':''})}
   function rs(ok){
