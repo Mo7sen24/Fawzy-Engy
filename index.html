@@ -567,6 +567,7 @@ html.so #fog i{animation-play-state:paused!important}
  <div class="rmw"><textarea class="in2" id="rm" rows="4" maxlength="300" placeholder="اترك كلمة طيبة للعروسين… (اختياري)" aria-label="رسالتك"></textarea><span class="rmc" id="rmc">0 / 300</span></div>
  <div class="row" style="margin-top:.4em"><button class="b f" id="ry" type="button" style="padding:.65em 1.1em;margin:0">سأحضر &nbsp;♥</button><button class="b" id="rx" type="button" style="padding:.65em 1.1em;margin:0">أعتذر عن الحضور</button></div></div></section>
 <section class="sec fr"><span class="dr tl" aria-hidden="true"><svg viewBox="0 0 120 160"><use href="#sprig"/></svg></span><span class="dr tr" aria-hidden="true"><svg viewBox="0 0 120 160"><use href="#sprig"/></svg></span><span class="dr bl" aria-hidden="true"><svg viewBox="0 0 120 160"><use href="#sprig"/></svg></span><span class="dr br" aria-hidden="true"><svg viewBox="0 0 120 160"><use href="#sprig"/></svg></span> <div class="t" style="top:76%;line-height:1.5"><svg class="fl" viewBox="0 0 200 24" aria-hidden="true"><use href="#flr"/></svg><p class="ttl" style="font-size:1.1em">Your presence completes our joy</p><p class="nm"><b>Fawzy</b><i>&amp;</i><b>Engy</b></p><p class="k" style="letter-spacing:.2em!important;font-size:.66em;margin-top:.9em">We can’t wait to celebrate with you</p></div><img class="end-hands" alt="" src="img20.png"></section>
+<section class="sec" id="p9" dir="rtl" lang="ar"><div class="p9bg" aria-hidden="true"><img alt="" src="tray06.jpg" loading="lazy"><img alt="" src="tray04.jpg" loading="lazy"><img alt="" src="tray02.jpg" loading="lazy"><img alt="" src="tray05.jpg" loading="lazy"><img alt="" src="tray01.jpg" loading="lazy"><img alt="" src="tray03.jpg" loading="lazy"></div><div class="p9ov" aria-hidden="true"></div><div class="t" id="p9t"><div class="p9r" aria-hidden="true"><i></i></div><p class="p9a">ساعات وهينتهى الفصل الاول من قصة حب فوزى و إنچى، واللى كان فى جزء شاهد عليها .. ف حبينا نخلى الكل يشهد</p><p class="p9b">عشان كدا هنستناكوا تشرفونا و نشوف فرحتكوا بينا سواء من اهلنا، او صحابنا، زمايلنا، لكل شخص بيحبنا من قلبه .. هنستناه</p><p class="p9b">الفصل الأول هينتهى بيكوا وهنبدأ سوا فصل جديد .. عشان كدا مفيش حِجج و مفيش اعذار .. فرحتنا هتكمل بيكوا .. بنحبكم ومستنيينكم تنورونا 🤎</p><div class="p9r" aria-hidden="true"><i></i></div></div></section>
 </main>
 <img id="sl" class="side" alt="" src="img21.webp"><img id="sr" class="side" alt="">
 <script>
@@ -842,6 +843,23 @@ html.ar #fog i{animation-play-state:paused!important}
 #rest #p7t .pr{display:flex!important;justify-content:space-between;align-items:baseline;gap:.7em;font-size:.85em;padding:.3em 0}
 #rest #p7t .pr b{white-space:nowrap;letter-spacing:.02em;flex:none}
 #rest #p7t .pr span{text-align:right;min-width:0;line-height:1.3;white-space:nowrap}
+
+/* ===== Final page: couple photos as background + message ===== */
+#rest #p9.sec{background:#2b0a12!important;color:#f6ead9!important;text-shadow:none!important;padding:84px 0!important;min-height:0;justify-content:center}
+#p9 .p9bg{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:0;z-index:0;background:#2b0a12}
+#p9 .p9bg img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85) sepia(.12);transform:scale(1.06);transition:transform 3.2s cubic-bezier(.2,.7,.2,1)}
+#p9.on .p9bg img{transform:none}
+#p9 .p9ov{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 80% 62% at 50% 50%,rgba(38,8,16,.8),rgba(38,8,16,.64) 70%,rgba(38,8,16,.46)),linear-gradient(180deg,rgba(43,10,18,.5),rgba(43,10,18,.12) 30%,rgba(43,10,18,.12) 70%,rgba(43,10,18,.55))}
+#rest #p9 .t{position:relative!important;z-index:2;padding:0 11cqw!important;text-align:center}
+#p9 .p9a,#p9 .p9b{margin:0!important;color:#f6ead9;letter-spacing:0;text-wrap:balance;text-shadow:0 1px 14px rgba(20,4,8,.55)}
+#p9 .p9a{font-family:"Aref Ruqaa","Amiri","Noto Naskh Arabic",serif;font-weight:700;font-size:5.4cqw;line-height:1.95;color:#e8c98f;margin-bottom:.9em!important}
+#p9 .p9b{font-family:"Amiri","Noto Naskh Arabic",serif;font-weight:400;font-size:4.7cqw;line-height:2;margin-bottom:.8em!important}
+#p9 .p9b:last-of-type{margin-bottom:1.1em!important}
+#p9 .p9r{display:flex;align-items:center;justify-content:center;gap:.8em;margin:0 0 1.3em}
+#p9 .p9r:last-child{margin:.2em 0 0}
+#p9 .p9r::before,#p9 .p9r::after{content:"";height:1px;width:22cqw;background:linear-gradient(90deg,transparent,#c9a36a)}
+#p9 .p9r::after{transform:scaleX(-1)}
+#p9 .p9r i{width:7px;height:7px;background:#e0bd82;transform:rotate(45deg);display:block}
 </style>
 <button id="autoBtn" type="button" aria-label="Pause auto-scroll"><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></button>
 <script>
