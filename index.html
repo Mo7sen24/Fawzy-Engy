@@ -654,7 +654,7 @@ html.so #fog i{animation-play-state:paused!important}
 <script>
 (function(){
   // === بيانات الدعوة: غيّرها من هنا بس ===
-  var C={n1:'Fawzy',n2:'Engy',date:'2026-11-18T19:00',venue:'فيلا نور',city:'قبل مدخل المحلة',phone:'',sheet:'https://script.google.com/macros/s/AKfycbyROc9XbvnAz0HlaDvAF4hDFfjO3RYPTY_pkerHWyQZNPytE5qVigDJgJ4fJNOqkLb_ZA/exec',
+  var C={n1:'Fawzy',n2:'Engy',date:'2026-11-18T19:00',venue:'فيلا نور',city:'قبل مدخل المحلة',phone:'',sheet:'https://script.google.com/macros/s/AKfycbzkz2z1E-qHS0HwhgJcCmXPDrN-yQZqTmex2wV7Csd6KscJoa36xgvkL1kihtDOGgkdiQ/exec',
     prog:[['4:00 PM','Photo Session'],['7:00 PM','Guests Arrive at the Venue'],['8:00 PM','Katb Kitab & Celebration'],['10:00 PM','Dinner'],['10:30 PM','Final Celebration']]};
   var $=function(i){return document.getElementById(i)},L='en-US',D=new Date(C.date),
       N=function(x){return x.toLocaleString(L,{useGrouping:false})},P=function(x){return(x<10?'0':'')+x};
@@ -678,21 +678,19 @@ html.so #fog i{animation-play-state:paused!important}
   var busy=false;
   function uid(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,10)}}
   function post(data){
-    var body=JSON.stringify(data);
-    function go(mode,ms){
-      var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort()},ms);
-      var o={method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:body,redirect:'follow',mode:mode,signal:ctl?ctl.signal:undefined};
-      return fetch(C.sheet,o).then(function(r){clearTimeout(tm);return r},function(e){clearTimeout(tm);throw e})}
-    function attempt(n){
-      return go('cors',20000)
-        .then(function(r){return r.json()})
-        .then(function(j){if(!j||j.ok!==true){var e=new Error('server');e.server=true;throw e}return j})
-        .catch(function(e){
-          if(e&&e.server)throw e;
-          /* the reply could not be read (CORS / redirect page): send once more without reading it; the id prevents duplicates */
-          return go('no-cors',20000)});
-    }
-    function loop(n){return attempt(n).catch(function(e){try{console.error('RSVP send failed',e)}catch(_){}if(n>=2)throw e;return new Promise(function(r){setTimeout(r,1500*(n+1))}).then(function(){return loop(n+1)})})}
+    /* JSONP: the page really reads the script's answer, so a "sent" message means the row was written */
+    function once(){
+      return new Promise(function(res,rej){
+        var cb='rsvp_'+Date.now().toString(36)+Math.floor(Math.random()*1e6),done=false,sc=document.createElement('script'),tm;
+        function end(f,v){if(done)return;done=true;clearTimeout(tm);try{delete window[cb]}catch(_){window[cb]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);f(v)}
+        window[cb]=function(j){if(j&&j.ok===true)end(res,j);else end(rej,new Error((j&&j.error)||'server'))};
+        sc.onerror=function(){end(rej,new Error('network'))};
+        sc.onload=function(){setTimeout(function(){end(rej,new Error('noreply'))},300)};
+        tm=setTimeout(function(){end(rej,new Error('timeout'))},20000);
+        var q=['action=rsvp','callback='+cb,'id='+encodeURIComponent(data.id),'name='+encodeURIComponent(data.name),'attending='+encodeURIComponent(data.attending),'guests='+encodeURIComponent(data.guests),'message='+encodeURIComponent(data.message),'_='+Date.now()].join('&');
+        sc.async=true;sc.referrerPolicy='no-referrer';sc.src=C.sheet+(C.sheet.indexOf('?')<0?'?':'&')+q;
+        document.head.appendChild(sc)})}
+    function loop(n){return once().catch(function(e){try{console.error('RSVP send failed:',e&&e.message)}catch(_){}if(n>=2)throw e;return new Promise(function(r){setTimeout(r,1500*(n+1))}).then(function(){return loop(n+1)})})}
     return loop(0)}
   var rid=null;
   function setBusy(v){busy=v;['ry','rx'].forEach(function(k){var e=$(k);e.disabled=v;e.style.opacity=v?'.6':'';e.style.pointerEvents=v?'none':''})}
